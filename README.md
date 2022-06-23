@@ -1,4 +1,4 @@
-# Ignite Todo
+# Ignite Lab | Reactjs
 
 Ignite lab reactjs event platform.
 
