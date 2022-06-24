@@ -1,5 +1,6 @@
 import { gql, useQuery } from "@apollo/client";
 import "@vime/core/themes/default.css";
+/* @vite-ignore */
 import { DefaultUi, Player, Youtube } from "@vime/react";
 import {
   CaretRight,
