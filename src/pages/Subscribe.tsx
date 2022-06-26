@@ -28,7 +28,7 @@ export function Subscribe() {
         },
       });
       toast.success("Inscrição realizada com sucesso");
-      navigate("/");
+      navigate("/events");
     } catch (err) {
       toast.error("Erro ao realizar inscrição");
     }
