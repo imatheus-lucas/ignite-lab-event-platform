@@ -1,6 +1,6 @@
 # Ignite Lab Event Platform
 
-![screenshot.png](.github/assets/screenshot.png)
+![screenshot.png](.github/assets/ignite-lab-event-platform.png)
 
 ## 💻 O projeto
 
