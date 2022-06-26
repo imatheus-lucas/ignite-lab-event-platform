@@ -1,4 +1,3 @@
-import { gql, useQuery } from "@apollo/client";
 import "@vime/core/themes/default.css";
 /* @vite-ignore */
 import { DefaultUi, Player, Youtube } from "@vime/react";
@@ -8,43 +7,20 @@ import {
   FileArrowDown,
   Lightning,
 } from "phosphor-react";
+import { useGetLessonsBySlugQuery } from "../graphql/generated";
 
-const GET_LESSON_BY_SLUG_QUERY = gql`
-  query GetLessonsBySlug($slug: String) {
-    lesson(where: { slug: $slug }) {
-      description
-      videoId
-      title
-      teacher {
-        bio
-        name
-        avatarURL
-      }
-    }
-  }
-`;
-type LessonQueryResponse = {
-  lesson: {
-    description: string;
-    videoId: string;
-    title: string;
-    teacher: {
-      bio: string;
-      avatarURL: string;
-      name: string;
-    };
-  };
-};
 type VideoProps = {
   lessonSlug: string;
 };
 
 export function Video({ lessonSlug }: VideoProps) {
-  const { data } = useQuery<LessonQueryResponse>(GET_LESSON_BY_SLUG_QUERY, {
-    variables: { slug: lessonSlug },
+  const { data } = useGetLessonsBySlugQuery({
+    variables: {
+      slug: lessonSlug,
+    },
   });
 
-  if (!data) {
+  if (!data || !data.lesson) {
     return (
       <div className="flex-1">
         <p>Loading...</p>
@@ -70,21 +46,23 @@ export function Video({ lessonSlug }: VideoProps) {
               {data.lesson.description}
             </p>
 
-            <div className="flex items-center gap-4 mt-6">
-              <img
-                src="https://github.com/imatheus-lucas.png"
-                className="h-16 w-16 rounded-full border-2 border-blue-500"
-                alt=""
-              />
-              <div className="leading-relaxed">
-                <strong className="font-bold text-2xl block">
-                  {data.lesson.teacher.name}
-                </strong>
-                <span className="text-gray-200 text-sm block">
-                  {data.lesson.teacher.bio}
-                </span>
+            {data.lesson.teacher && (
+              <div className="flex items-center gap-4 mt-6">
+                <img
+                  src="https://github.com/imatheus-lucas.png"
+                  className="h-16 w-16 rounded-full border-2 border-blue-500"
+                  alt=""
+                />
+                <div className="leading-relaxed">
+                  <strong className="font-bold text-2xl block">
+                    {data.lesson.teacher.name}
+                  </strong>
+                  <span className="text-gray-200 text-sm block">
+                    {data.lesson.teacher.bio}
+                  </span>
+                </div>
               </div>
-            </div>
+            )}
           </div>
           <div className="flex flex-col gap-4">
             <a
@@ -103,12 +81,12 @@ export function Video({ lessonSlug }: VideoProps) {
             </a>
           </div>
         </div>
-        <div className="gap-8 mt-20 grid grid-cols-2">
+        <div className="gap-8 mt-20 grid grid-cols-2  ">
           <a
             href=""
             className="bg-gray-700 rounded overflow-hidden flex items-stretch gap-6 hover:bg-gray-600 transition-colors"
           >
-            <div className="bg-green-700 h-full p-6 flex items-center">
+            <div className="bg-green-700 p-6 flex items-center">
               <FileArrowDown size={40} />
             </div>
             <div className="py-6 leading-relaxed">
@@ -118,7 +96,7 @@ export function Video({ lessonSlug }: VideoProps) {
                 desenvolvimento
               </p>
             </div>
-            <div className="h-full p-6 flex items-center">
+            <div className="p-6 flex items-center">
               <CaretRight size={24} />
             </div>
           </a>
