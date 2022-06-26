@@ -8,7 +8,7 @@ export function Subscribe() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
 
-  const [createSubscriber, { data, loading }] = useCreateSubscriberMutation();
+  const [createSubscriber, { loading }] = useCreateSubscriberMutation();
 
   async function handleSubscribe(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -18,23 +18,23 @@ export function Subscribe() {
   }
   return (
     <div className="min-h-screen bg-blur bg-cover bg-no-repeat flex flex-col items-center">
-      <div className="w-full max-w-[1100px] flex items-center justify-between mt-20 mx-auto">
-        <div className="max-w-[640px]">
+      <div className="w-full max-w-[1100px] flex flex-col md:flex-row items-center justify-between mt-20 md:mx-auto">
+        <div className="max-w-[640px] text-center md:text-left flex flex-col items-center md:items-start p-2 md:p-0">
           <Logo />
 
           <h1 className=" mt-8 text-[2.rem] leading-tight">
-            Construa uma
+            Construa uma{" "}
             <strong className="text-blue-500">aplicação completa</strong>, do
             zero, com <strong className="text-blue-500">React</strong>
           </h1>
-          <p className="mt-4  text-gray-200 leading-relaxed">
+          <p className="mt-4  text-gray-200 leading-relaxed mb-8 md:mb-0">
             Em apenas uma semana você vai dominar na prática uma das tecnologias
             mais utilizadas e com alta demanda para acessar as melhores
             oportunidades do mercado.
           </p>
         </div>
 
-        <div className="p-8 bg-gray-700 border border-gray-500 rounded">
+        <div className="p-8 bg-gray-700 border border-gray-500 rounded w-full md:w-auto">
           <strong className="text-2xl ">Inscreva-se gratuitamente</strong>
           <form
             onSubmit={handleSubscribe}
@@ -59,14 +59,18 @@ export function Subscribe() {
             <button
               disabled={loading}
               type="submit"
-              className="mt-4 bg-green-500 uppercase py-4 rounded font-bold text-sm hover:bg-green-700 transition-colors duration-200 disabled:opacity-50"
+              className="mt-4 bg-green-500 uppercase py-4 rounded font-bold text-sm hover:bg-green-700 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Garantir minha vaga
             </button>
           </form>
         </div>
       </div>
-      <img src={CodeMockupImge} alt="code image " />
+      <img
+        src={CodeMockupImge}
+        alt="code image mockup"
+        className="my-10 md:my-0"
+      />
     </div>
   );
 }

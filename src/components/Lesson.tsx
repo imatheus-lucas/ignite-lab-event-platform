@@ -8,6 +8,7 @@ type LessonProps = {
   slug: string;
   availableAt: Date;
   type: "live" | "class";
+  disableSidebar?: () => void;
 };
 export function Lesson(props: LessonProps) {
   const { slug } = useParams<{ slug: string }>();
@@ -24,7 +25,11 @@ export function Lesson(props: LessonProps) {
   const isActiveLesson = slug === props.slug;
 
   return (
-    <Link to={`/event/lesson/${props.slug}`} className="group">
+    <Link
+      to={`/event/lesson/${props.slug}`}
+      onClick={props.disableSidebar}
+      className="group"
+    >
       <span className="text-gray-300">{availableDateFormatted}</span>
 
       <div
