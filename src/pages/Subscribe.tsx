@@ -1,5 +1,6 @@
 import { FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
 import CodeMockupImge from "../assets/code-mockup.png";
 import { Logo } from "../components/Logo";
 import { useCreateSubscriberMutation } from "../graphql/generated";
@@ -8,20 +9,49 @@ export function Subscribe() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
 
-  const [createSubscriber, { loading }] = useCreateSubscriberMutation();
+  const [createSubscriber, { loading, error }] = useCreateSubscriberMutation({
+    errorPolicy: "all",
+  });
 
   async function handleSubscribe(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    await createSubscriber({ variables: { name, email } });
 
-    navigate("/event");
+    try {
+      if (!name || !email) {
+        toast.warning("Nome e e-mail são obrigatórios");
+        return;
+      }
+      await createSubscriber({
+        variables: {
+          name,
+          email,
+        },
+      });
+      toast.success("Inscrição realizada com sucesso");
+      navigate("/");
+    } catch (err) {
+      toast.error("Erro ao realizar inscrição");
+    }
   }
+
   return (
     <div className="min-h-screen bg-blur bg-cover bg-no-repeat flex flex-col items-center">
       <div className="w-full max-w-[1100px] flex flex-col md:flex-row items-center justify-between mt-20 md:mx-auto">
         <div className="max-w-[640px] text-center md:text-left flex flex-col items-center md:items-start p-2 md:p-0">
           <Logo />
-
+          <ToastContainer
+            position="top-right"
+            autoClose={5000}
+            className="bg-gray-700"
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            theme={"dark"}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+          />
           <h1 className=" mt-8 text-[2.rem] leading-tight">
             Construa uma{" "}
             <strong className="text-blue-500">aplicação completa</strong>, do
